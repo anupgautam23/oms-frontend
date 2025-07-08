@@ -1,53 +1,65 @@
-
-import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { useOrders } from '../contexts/OrderContext';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Plus, Package, Clock, CheckCircle, XCircle, Truck } from 'lucide-react';
+import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { OrderStatus, useOrders } from "../contexts/OrderContext";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Plus,
+  Package,
+  Clock,
+  CheckCircle,
+  XCircle,
+  Truck,
+} from "lucide-react";
 
 const Dashboard = () => {
   const { user } = useAuth();
   const { userOrders } = useOrders();
 
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status: OrderStatus) => {
     switch (status) {
-      case 'pending':
+      case OrderStatus.PENDING:
         return <Clock className="h-4 w-4" />;
-      case 'processing':
+      case OrderStatus.PROCESSING:
         return <Truck className="h-4 w-4" />;
-      case 'completed':
+      case OrderStatus.DELIVERED:
         return <CheckCircle className="h-4 w-4" />;
-      case 'cancelled':
+      case OrderStatus.CANCELLED:
         return <XCircle className="h-4 w-4" />;
       default:
         return <Package className="h-4 w-4" />;
     }
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: OrderStatus) => {
     switch (status) {
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'processing':
-        return 'bg-blue-100 text-blue-800';
-      case 'completed':
-        return 'bg-green-100 text-green-800';
-      case 'cancelled':
-        return 'bg-red-100 text-red-800';
+      case OrderStatus.PENDING:
+        return "bg-yellow-100 text-yellow-800";
+      case OrderStatus.PROCESSING:
+        return "bg-blue-100 text-blue-800";
+      case OrderStatus.DELIVERED:
+        return "bg-green-100 text-green-800";
+      case OrderStatus.CANCELLED:
+        return "bg-red-100 text-red-800";
       default:
-        return 'bg-gray-100 text-gray-800';
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -70,8 +82,12 @@ const Dashboard = () => {
                 <Package className="h-6 w-6 text-blue-600" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Orders</p>
-                <p className="text-2xl font-bold text-gray-900">{userOrders.length}</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Total Orders
+                </p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {userOrders.length}
+                </p>
               </div>
             </div>
           </CardContent>
@@ -84,9 +100,13 @@ const Dashboard = () => {
                 <CheckCircle className="h-6 w-6 text-green-600" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Completed</p>
+                <p className="text-sm font-medium text-gray-600">Delivered</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {userOrders.filter(order => order.status === 'completed').length}
+                  {
+                    userOrders.filter(
+                      (order) => order.status === OrderStatus.DELIVERED
+                    ).length
+                  }
                 </p>
               </div>
             </div>
@@ -102,7 +122,11 @@ const Dashboard = () => {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Pending</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {userOrders.filter(order => order.status === 'pending').length}
+                  {
+                    userOrders.filter(
+                      (order) => order.status === OrderStatus.PENDING
+                    ).length
+                  }
                 </p>
               </div>
             </div>
@@ -124,9 +148,12 @@ const Dashboard = () => {
         <Card>
           <CardContent className="p-12 text-center">
             <Package className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No orders yet</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              No orders yet
+            </h3>
             <p className="text-gray-600 mb-6">
-              You haven't placed any orders yet. Start by placing your first order!
+              You haven't placed any orders yet. Start by placing your first
+              order!
             </p>
             <Link to="/place-order">
               <Button>
@@ -143,7 +170,9 @@ const Dashboard = () => {
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-start">
                   <div>
-                    <CardTitle className="text-lg">{order.productName}</CardTitle>
+                    <CardTitle className="text-lg">
+                      {order.productName}
+                    </CardTitle>
                     <CardDescription>
                       Order #{order.id} • {formatDate(order.createdAt)}
                     </CardDescription>
@@ -159,13 +188,18 @@ const Dashboard = () => {
               <CardContent className="pt-0">
                 <div className="flex justify-between items-center">
                   <div className="text-sm text-gray-600">
-                    <span className="font-medium">Quantity:</span> {order.quantity}
+                    <span className="font-medium">Quantity:</span>{" "}
+                    {order.quantity}
                   </div>
                   <div className="text-sm text-gray-500">
-                    {order.status === 'pending' && 'Awaiting confirmation'}
-                    {order.status === 'processing' && 'Being prepared'}
-                    {order.status === 'completed' && 'Order fulfilled'}
-                    {order.status === 'cancelled' && 'Order cancelled'}
+                    {order.status === OrderStatus.PENDING &&
+                      "Awaiting confirmation"}
+                    {order.status === OrderStatus.PROCESSING &&
+                      "Being prepared"}
+                    {order.status === OrderStatus.DELIVERED &&
+                      "Order fulfilled"}
+                    {order.status === OrderStatus.CANCELLED &&
+                      "Order cancelled"}
                   </div>
                 </div>
               </CardContent>

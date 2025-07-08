@@ -18,8 +18,9 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// API base URL
-const API_BASE_URL = "http://localhost:8081/api/auth";
+// API base URL from environment
+const AUTH_API_BASE_URL =
+  import.meta.env.VITE_AUTH_SERVICE_URL || "http://localhost:8081";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -37,7 +38,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const validateTokenAndSetUser = async (token: string) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/me`, {
+      const response = await fetch(`${AUTH_API_BASE_URL}/api/auth/me`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -70,7 +71,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const fetchUserDetails = async (token: string) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/me`, {
+      const response = await fetch(`${AUTH_API_BASE_URL}/api/auth/me`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -104,7 +105,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/login`, {
+      const response = await fetch(`${AUTH_API_BASE_URL}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -155,7 +156,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/register`, {
+      const response = await fetch(`${AUTH_API_BASE_URL}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
