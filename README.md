@@ -76,18 +76,6 @@ src/
 4. **Open your browser**
    Navigate to `http://localhost:8080`
 
-## 👤 Demo Accounts
-
-For testing purposes, you can use these demo accounts:
-
-### Regular User
-- **Email**: user@oms.com
-- **Password**: password123
-
-### Admin User
-- **Email**: admin@oms.com
-- **Password**: password123
-
 ## 🎨 Design System
 
 The application uses a consistent design system with:
